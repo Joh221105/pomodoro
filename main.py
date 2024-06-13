@@ -6,8 +6,25 @@ root = Tk()
 root.title("Pomodoro Timer")
 root.minsize(1000, 1000)
 
+# converts the minutes into seconds
+work_time = 1 * 60  
+short_break = 2 * 60  
+long_break = 3 * 60  
+count = work_time  # Initial countdown value
+
+
+# imitates the countdown and updates the display using recursion
+
 def update_time():
-    pass
+    global count
+    if count > 0:
+        mins, secs = divmod(count, 60)
+        time_format = f'{mins:02}:{secs:02}'
+        canvas.itemconfig(timer_text, text=time_format)
+        count -= 1
+        root.after(1000, update_time)
+    else:
+        pass
 
 # path to image when not hosted locally 
 script_dir = os.path.dirname(__file__)
