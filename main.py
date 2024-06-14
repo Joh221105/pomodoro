@@ -1,22 +1,31 @@
 from tkinter import *
 import os
+import pygame
+
+# Initialize pygame mixer
+pygame.mixer.init()
 
 # initializes tkinter 
 root = Tk()
 root.title("Pomodoro Timer")
 root.minsize(1000, 1000)
 
-
-# imitates the countdown and updates the display using recursion
 session = 1
+
+# function to play sound when session is over
+def play_sound():
+    pygame.mixer.music.load("./finish.wav")  # Replace with your audio file
+    pygame.mixer.music.play()
 
 def determine_session():
     global session
   
-    work_time = 5  # Using smaller values for testing
-    short_break = 2 * 60  # 2 minutes
-    long_break = 3 * 60  # 3 minutes
+    # turns minutes into seconds
+    work_time = 5
+    short_break = 5 * 60  
+    long_break = 20 * 60  
     
+    # determines the length of the session
     if session % 8 == 0:
         update_time(long_break)
     elif session % 2 == 0:
@@ -25,7 +34,8 @@ def determine_session():
         update_time(work_time)
     
     session += 1
- 
+
+# imitates the countdown and updates the display using recursion
 def update_time(count):
     if count >= 0:
         mins, secs = divmod(count, 60)
@@ -34,7 +44,7 @@ def update_time(count):
         count -= 1
         root.after(1000, update_time, count)
     else:
-        pass
+        play_sound()
 
 # path to image when not hosted locally 
 script_dir = os.path.dirname(__file__)
